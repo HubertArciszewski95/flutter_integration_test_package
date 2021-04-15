@@ -7,41 +7,22 @@ import 'package:flutter_integration_test_package/main.dart' as app;
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   group('end-to-end test', () {
-    testWidgets('tap on the floating action button; verify counter',
-        (WidgetTester tester) async {
+    testWidgets('Offstage element test ', (WidgetTester tester) async {
       app.main();
       await tester.pumpAndSettle();
 
-      // Finds the floating action button to tap on.
-      final Finder fab = find.byTooltip('Increment');
+      // Finds last element that is offStage
+      final Finder lastElement = find.text('offstage element');
 
-      // Emulate a tap on the floating action button.
-      await tester.tap(fab);
+      await Future.delayed(Duration(seconds: 5));
 
-      await tester.pumpAndSettle();
-
-      // This assertion will fail
+      // This assertion should fail, because 'lastElemnt'
+      // is not visible on the screen
       expect(
-        find.text('2'),
+        lastElement,
         findsOneWidget,
-        reason: 'Assertion failed on first test',
+        reason: 'This assertion should fail',
       );
-    });
-
-    testWidgets('test 2', (WidgetTester tester) async {
-      app.main();
-      await tester.pumpAndSettle();
-
-      // Finds the floating action button to tap on.
-      final Finder fab = find.byTooltip('Increment');
-
-      // Emulate a tap on the floating action button.
-      await tester.tap(fab);
-      await tester.tap(fab);
-
-      await tester.pumpAndSettle();
-
-      expect(find.text('2'), findsOneWidget);
     });
   });
 }
